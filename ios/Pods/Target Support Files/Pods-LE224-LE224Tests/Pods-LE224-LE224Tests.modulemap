@@ -1,0 +1,6 @@
+module Pods_LE224_LE224Tests {
+  umbrella header "Pods-LE224-LE224Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

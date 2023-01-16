@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: com.google.android.gms:play-services-auth-api-phone:17.0.0@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5f17f80a1f56fc0366d13c85b4c0201d/transformed/jetified-play-services-auth-api-phone-17.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cdc2c2dee6060d10e0d6afcc031863d4/transformed/jetified-play-services-auth-api-phone-17.0.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cdc2c2dee6060d10e0d6afcc031863d4/transformed/jetified-play-services-auth-api-phone-17.0.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/cdc2c2dee6060d10e0d6afcc031863d4/transformed/jetified-play-services-auth-api-phone-17.0.0/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/4eeef539f43ab05282498747f743629f/transformed/jetified-play-services-auth-api-phone-17.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/4eeef539f43ab05282498747f743629f/transformed/jetified-play-services-auth-api-phone-17.0.0/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

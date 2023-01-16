@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="Gradle: com.facebook.android:facebook-android-sdk:4.16.1@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/d9e9300c74d0b108d5e6d1db30d1caa7/transformed/jetified-facebook-android-sdk-4.16.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d9e9300c74d0b108d5e6d1db30d1caa7/transformed/jetified-facebook-android-sdk-4.16.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/d9e9300c74d0b108d5e6d1db30d1caa7/transformed/jetified-facebook-android-sdk-4.16.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5585b9603401982e677307093d9a5440/transformed/jetified-facebook-android-sdk-4.16.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/5585b9603401982e677307093d9a5440/transformed/jetified-facebook-android-sdk-4.16.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5585b9603401982e677307093d9a5440/transformed/jetified-facebook-android-sdk-4.16.1/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/76e328ef3e94e96e67c93bdb98894f57/transformed/jetified-facebook-android-sdk-4.16.1/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/76e328ef3e94e96e67c93bdb98894f57/transformed/jetified-facebook-android-sdk-4.16.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/76e328ef3e94e96e67c93bdb98894f57/transformed/jetified-facebook-android-sdk-4.16.1/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/219c4603bca9872f6c84d3da2c105d38/transformed/jetified-facebook-android-sdk-4.16.1/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/219c4603bca9872f6c84d3da2c105d38/transformed/jetified-facebook-android-sdk-4.16.1/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/219c4603bca9872f6c84d3da2c105d38/transformed/jetified-facebook-android-sdk-4.16.1/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-android-sdk/4.16.1/a96a456b4989d2aa19f6e6b0f26fabd75a9f30a0/facebook-android-sdk-4.16.1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.facebook.android/facebook-android-sdk/4.16.1/fc12b3c982cd78b884fac44a1e662fb71dc8879d/facebook-android-sdk-4.16.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
