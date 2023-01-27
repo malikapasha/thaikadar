@@ -270,7 +270,7 @@ alignItems:"center",}}>
      </View>
      {
                loading === true ?
-           <ActivityIndicator size="small" color="#050A30"  style={{position:"absolute",alignItems:"center",alignSelf:"center",marginTop:"15%"}} />
+           <ActivityIndicator size="small" color="#28A646"  style={{position:"absolute",alignItems:"center",alignSelf:"center",marginTop:"15%"}} />
            :
            <View>
                </View>
@@ -330,7 +330,7 @@ alignItems:"center",}}>
   sliderBoxHeight={'100%'}
 
 circleLoop
-dotColor="#050A30"
+dotColor="#28A646"
 inactiveDotColor="#90A4AE"
 
 paginationBoxStyle={{
@@ -356,7 +356,7 @@ console.warn(`image ${index} pressed`)
 
   <Text style={{ fontFamily:'Poppins-Regular',height:38,fontSize:25,
 fontWeight:'700',
-color: '#2E3333', alignSelf: 'center',position:'absolute',bottom:'18%' }}>
+color: '#28A646', alignSelf: 'center',position:'absolute',bottom:'18%' }}>
     
    Welcome to Thaikadar.com
             

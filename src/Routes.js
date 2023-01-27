@@ -11,7 +11,11 @@ import AddScreen from './screens/Main/AddSreen/AddScreen';
 import SignInScreen from "./screens/Auth/SignInScreen/SignInScreen";
 import IntroScreen from "./screens/Auth/Intro";
 import WelcomeLoginWith from "./screens/Auth/WelcomeLoginWith";
+import Login from "./screens/Auth/Login";
 
+import ForgetPassword from "./screens/Auth/ForgetPassword";
+import ChangePassword from "./screens/Auth/ChangePassword";
+import Signup from "./screens/Auth/Signup";
 
 
 import SignUpScreen from "./screens/Auth/SignUpScreen/SignUpScreen";
@@ -95,6 +99,12 @@ const AuthStacks = ()=>{
              <AuthStack.Screen name="WelcomeLoginWith" component={WelcomeLoginWith} options={{ headerShown: false }} />
             
              
+             <AuthStack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+         
+          <AuthStack.Screen name="Signup" component={Signup} options={{ headerShown: false }} />
+          <AuthStack.Screen name="ChangePassword" component={ChangePassword} options={{ headerShown: false }} />
+          <AuthStack.Screen name="ForgetPassword" component={ForgetPassword} options={{ headerShown: false }} />
+         
             <AuthStack.Screen name="SignInScreen" component={SignInScreen} options={{ headerShown: false }} />
             <AuthStack.Screen name="OtpSocial" component={OtpSocial} options={{ headerShown: false }} />
             <AuthStack.Screen name="UpdatePassword" component={UpdatePassword} options={{ headerShown: false }} />

@@ -1,28 +1,32 @@
+
 import React ,{ createRef, useState} from 'react';
-import {View,Text,TouchableOpacity,Image,FlatList,TextInput,StyleSheet,Dimensions,Animated,StatusBar,ImageBackground,ToastAndroid, ScrollView, Platform} from 'react-native';
+import {View,Text,TouchableOpacity,Image,FlatList,TextInput,StyleSheet,Dimensions,Animated,StatusBar,ImageBackground,ToastAndroid, ScrollView, Platform, Alert} from 'react-native';
 import {globalStyle} from '../stylesheet/globalStyle';
 import { Button } from 'react-native-elements/';
 import Icon from 'react-native-vector-icons/dist/EvilIcons';
 import IconAwe from 'react-native-vector-icons/dist/FontAwesome';
 import Iconic from 'react-native-vector-icons/dist/Ionicons';
 import Icons from 'react-native-vector-icons/dist/AntDesign';
-// import CountryPicker from "react-native-region-country-picker";
 import Iconico from 'react-native-vector-icons/dist/Ionicons'
 import IconFeat from 'react-native-vector-icons/dist/Feather';
 import { Item } from 'react-native-paper/lib/typescript/components/List/List';
-import firebase from '@react-native-firebase/app'
+import firebase from '@react-native-firebase/app' 
 import AsyncStorage from '@react-native-community/async-storage';
 import { styless } from "../../Auth/SignUpScreen/SignUpScreenStyle";
-const backgroundImage = require('../../../assets/images/home-screen/home-screen.png');
 const {width, height} = Dimensions.get('window');
+import { CommonActions } from '@react-navigation/native';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-
+import {  images, SIZES, COLORS, FONTS,AppConfig } from '../../../constant'
+import appConfig from '../../../constant/AppConfig';
+import messaging from '@react-native-firebase/messaging';
 export default class  OtpVerification extends React.Component {
    
     constructor(props){  
         super(props); 
         this.keyboardHeight = new Animated.Value(0)
        
+      
+
          this.ain = createRef(null);
          this.bin = createRef(null);
          this.cin = createRef(null);
@@ -30,6 +34,7 @@ export default class  OtpVerification extends React.Component {
          this.ein = createRef(null);
          this.fin = createRef(null);
         this.state = {  
+          timer:30,
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height,
             isFave :'false',
@@ -60,6 +65,7 @@ export default class  OtpVerification extends React.Component {
 
  userId: '',
  verificationId:'',
+ fcmTkn:"",
  
  
          
@@ -77,75 +83,72 @@ export default class  OtpVerification extends React.Component {
 
 
 
-       signup=async ()=>{
-
-         const userValue =  await AsyncStorage.getItem('phoneNo')
-       console.log('userValue:::',userValue)
+    signup= async() => {
+      
+          const phnNo =  await AsyncStorage.getItem('phoneNo')
+       console.log('phnNo:::',phnNo)
        this.setState({
-         phoneNo:userValue
+         phoneNo:phnNo
        })
 
+       let fcmToken = await messaging().getToken();
+
         console.log("phoneNo:::::::::",this.state.phoneNo)
-        // console.log("Status:::::::::",email)
-        // console.log("Status:::::::::",name)
-        // userValue+"@gmail.com"
-        fetch('https://thaikadar.com/api/create-user',
-        {
+        console.log("Fcm is :::::::::",fcmToken)
+ 
+this.setState({
+  isloading:true
+})
+
+      console.log("calling Faizi::::::",AppConfig.baseUrl+'create-user')
+      fetch(  appConfig.baseUrl+'create-user',
+       {
           method: 'POST',
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-        
           body: JSON.stringify({
             business_name:"",
-            business_number:userValue,
+            business_number:phnNo,
             business_email:"",
-            password:"1234",
+            password:"nopassword",
             user_type:"3",
-            fcm:"asdjhfgkhweooriwebdnbjksdASDFandjfsdfEDNFSDOflsdfasdf",
+            my_token:fcmToken,
             login_method:"3",
             identifier:"",
          
           }),
 
+          
         })
         .then((response) => response.json())
-        .then((responseJson) => {
-    
-          console.log("Here response data:::::",responseJson)
+        .then((responseJson) => {  
          
-    if (responseJson.status ===1){
-      console.log("Here response data:::::",responseJson)
-      let user = responseJson.user
-      this.saveUser(user)
-    }else{
+         
+          console.log(responseJson)
 
-      if (responseJson.user===""){
-        console.log("user is empty")
-      }else{
-        console.log(responseJson.user)
-        let user = responseJson.user
-        this.saveUser(user)
-
-      }
-    
-      
-    }
-           
-    // let user = responseJson.user
-    //         
-           
+          if (responseJson.status ===1){
+          this.setState({
+              isloading:false
+          })
+          let user =responseJson.data
+          this.saveUser(user)
+        
+              }
+        
         })
         .catch((error) => {
           console.log(error)
           console.log('error')
-         // this.setState({progress:false})
-    
+  
+            ToastAndroid.show('Error Occurred! Try again...', ToastAndroid.SHORT);
+
         });
 
     
-        }
+
+}
 
 
           saveUser =  async (user)=>{
@@ -158,20 +161,20 @@ export default class  OtpVerification extends React.Component {
           let islogin =  await AsyncStorage.getItem('islogin')
           let parseislogin = JSON.parse(islogin)
           console.log('parseislogin:::',parseislogin)
-           this.props.navigation.navigate('TabRoutes');
+          //  this.props.navigation.navigate('TabRoutes');
         
-          //   this.props.navigation.dispatch(
-          //   CommonActions.reset({
-          //     index: 0,
-          //     routes: [
-          //       { name: 'TabRoutes'},
-          //       // {
-          //       //   name: 'Profile',
-          //       //   params: { user: 'jane' },
-          //       // },
-          //     ],
-          //   })
-          // );
+            this.props.navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [
+                { name: 'TabRoutes'},
+                // {
+                //   name: 'Profile',
+                //   params: { user: 'jane' },
+                // },
+              ],
+            })
+          );
 
            
           
@@ -216,7 +219,7 @@ export default class  OtpVerification extends React.Component {
           //this.props.route.params.number
         } else {
          
-         alert("Please enter a valid 6-digit OTP code.")
+         Alert.alert( AppConfig.AppName, "Please enter full otp code.")
         }
       };
 
@@ -225,8 +228,6 @@ export default class  OtpVerification extends React.Component {
     
           const confirmResult = this.state.confirmResult;
          
-          console.log("checking now ")
-
           console.log("ConfirmResults::::",confirmResult)
             const verificationCode = str;
     
@@ -249,7 +250,8 @@ export default class  OtpVerification extends React.Component {
     
                 if(credential.token === "")
                 {
-                     alert('Please enter a valid 6-digit OTP code.')
+                  Alert.alert( AppConfig.AppName, "Please enter a valid 6 digit OTP code.")
+                    
                  console.log('Here');  
                 }
                 else
@@ -275,7 +277,18 @@ export default class  OtpVerification extends React.Component {
                        // this.updateuser();
     
                       //  this.props.navigation.navigate("UpdatePassword")
-                      this.signup()
+
+                      if(this.props.route.params.isforget === 1)
+                      {
+                        console.log("userforget::::::::: called ",this.props.route.params.isforget)
+
+                        this.props.navigation.navigate("ChangePassword",{isforget:1})
+                      }
+                      else
+                      {
+                        this.signup()
+                      }
+                   
                     })
                     .catch(error => {
                         alert(error.message)
@@ -283,15 +296,31 @@ export default class  OtpVerification extends React.Component {
                     })
     
     
-            } else {
-                alert('Veuillez entrer un code OTP valide à 6 chiffres.')
-            }
+            } 
       };
     
      
     
       componentDidMount() {
+
+        this.interval = setInterval(
+          () => 
+          {
+            if(this.state.timer !== 0)
+            {
+           
+                this.setState((prevState)=> ({ timer: prevState.timer - 1 }))
+             
+           
+            }
+        },
+          1000
+        );
+
+      
+
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
+          this.fcm_TokenConfig()
           this.handleGetPhoneNo()
           console.log("ConfirmResukt::::",this.state.confirmResult)
           let id = this.state.confirmResult.verificationId
@@ -310,85 +339,53 @@ export default class  OtpVerification extends React.Component {
 if (user)
 {
 
-                         console.log("userAuth:::::::::",user)
+                        //  console.log("userAuth:::::::::",user)
+                         console.log("userforget::::::::: ",this.props.route.params.isforget)
+
                             ToastAndroid.show(
-                           'Contact vérifié avec succès',
+                           'Contact Verify Sucessfully.',
                               ToastAndroid.SHORT,
                             );
     
-                           this.signup();
-                          
+                            if(this.props.route.params.isforget === 1)
+                            {
+                              console.log("userforget::::::::: called ",this.props.route.params.isforget)
+
+                              this.props.navigation.navigate("ChangePassword",{isforget:1})
+
+                            }
+                            else
+                            {
+                              this.signup()
+                            }
+
+                        
 }
 });
         }
 
 
-        //  firebase.auth()
-                  
-        //             .verifyPhoneNumber(this.state.phoneNo)
-        //             .on(
-        //               'state_changed',
-        //               phoneAuthSnapshot => {
-        //                 switch (phoneAuthSnapshot.state) {
-        //                   case firebase.auth.PhoneAuthState.CODE_SENT: // or 'sent'
-        //                     console.log('codeSend', phoneAuthSnapshot);
-    
-        //                     // this.setState({
-        //                     //   verificationId: phoneAuthSnapshot.verificationId,
-        //                     //   codefound: phoneAuthSnapshot.code,
-        //                     // });
-    
-        //                     setverificationId(phoneAuthSnapshot.verificationId);
-        //                     setcodefound(phoneAuthSnapshot.code);
-    
-        //                     // confirmResult => {
-    
-        //                     //       console.log('Confirm',confirmResult);
-        //                     //   this.setState({confirmResult: confirmResult});
-        //                     // };
-    
-        //                     break;
-        //                   case firebase.auth.PhoneAuthState.ERROR: // or 'error'
-        //                     console.log('verification error');
-    
-        //                     break;
-    
-        //                   // ---------------------
-        //                   // ANDROID ONLY EVENTS
-        //                   // ---------------------
-        //                   case firebase.auth.PhoneAuthState.AUTO_VERIFY_TIMEOUT: // or 'timeout'
-        //                     console.log('auto verify on android timed out');
-    
-        //                     break;
-        //                   case firebase.auth.PhoneAuthState.AUTO_VERIFIED: // or 'verified'
-        //                     console.log('auto verified on android');
-        //                     console.log(phoneAuthSnapshot);
-    
-        //                     ToastAndroid.show(
-        //                      lang === 'En'
-        //                         ? 'Contact verified successfully' :
-        //                          'تم التحقق من الاتصال بنجاح'
-        //                        ,
-        //                       ToastAndroid.SHORT,
-        //                     );
-    
-        //                   this.signup()
-    
-        //                     break;
-        //                 }
-        //               },
-        //               error => {
-        //                 console.log(error);
-        //               },
-        //               phoneAuthSnapshot => {
-        //                 console.log(phoneAuthSnapshot);
-        //               },
-        //             );
-
       }
+
+
+      
       componentWillUnmount() {
+
+        clearInterval(this.interval);
+
+       
         this._unsubscribe();
       }
+
+      fcm_TokenConfig = async()=>{
+        let fcmToken = await messaging().getToken();
+        console.log("It Call",fcmToken)
+        this.setState({
+          fcmTkn:fcmToken
+        })
+      }
+      
+
       handleGetPhoneNo = async () =>{
         const userValue =  await AsyncStorage.getItem('phoneNo')
        console.log('userValue:::',userValue)
@@ -398,6 +395,71 @@ if (user)
        
     }
   
+
+    handleSendCode = () => {
+    
+                 if (Platform.OS === 'ios') {
+                   console.log('ios');
+                  //  Linking.openURL('tel://+123456789');
+                 
+                firebase
+                    .auth()
+                    .signInWithPhoneNumber(this.state.phoneNo)
+                    .then(confirmResult => {
+                         this.setState({ confirmResult: confirmResult })
+                        //this.setState(confirmResult);
+                        console.log("ConfirmResult::::",this.state.confirmResult)
+                        console.log("verificationId::::",confirmResult.verificationId)
+                        this.setState({
+                          verificationId:confirmResult.verificationId
+                        })
+
+                        this.setState({isloading:false})
+                        // this.props.navigation.navigate("OtpVerification",{confirmResult:confirmResult,isforget:0})
+
+                        
+                    })
+                    .catch(error => {
+                        alert(error.message)
+                        this.setState({isloading:false})
+                        console.log(error)
+                    })
+  
+                    }
+  
+                    else
+                    {
+  
+                         firebase
+                    .auth()
+                    .signInWithPhoneNumber(this.state.phoneNo)
+                    .then(confirmResult => {
+                      console.log("ConfirmResult::::::;",confirmResult)
+                        // this.setState({ confirmResult: confirmResult })
+                        this.setState(confirmResult);
+                        console.log("verificationId::::",confirmResult.verificationId)
+                        this.setState({
+                          verificationId:confirmResult.verificationId
+                        })
+                        this.setState({isloading:false})
+                        // this.props.navigation.navigate("OtpVerification",{confirmResult:confirmResult,isforget:0})
+
+                    })
+                    .catch(error => {
+                        alert(error.message)
+  
+                        this.setState({isloading:false})
+                        console.log(error)
+                    })
+ 
+                         console.log('android');
+                  
+                  }
+  
+      
+
+                
+    };
 
     handleOnchangePhone = (text)=>{
         
@@ -415,8 +477,7 @@ if (user)
           return(
               <View style={{height:"100%",width:"100%",backgroundColor:"white"}}> 
              
-                <ImageBackground source={backgroundImage} resizeMode="cover" style={{ flex: 1,
-        justifyContent: "center"}}>
+           
               {/* <View style={{
     width: 100,
     height: 200,
@@ -438,17 +499,55 @@ if (user)
 </View> */}
  <View style={{height:"3%",width:"100%"}}>
                 </View>
-                <View style={{height:"10%",width:"100%",backgroundColor:"transparent",flexDirection:"row",top:-20}}>
-<TouchableOpacity style={{height:"100%",width:"10%",backgroundColor:"transparent",justifyContent:"flex-end",alignItems:"flex-end"}} onPress={()=>this.props.navigation.goBack()}>
-<View style={{height:"100%",width:"100%",backgroundColor:"transparent",justifyContent:"flex-end",alignItems:"flex-end"}}>
+                <View style={{height:60,width:"100%",backgroundColor:"white",
+                flexDirection:"row",
+                top:20}}>
+<TouchableOpacity 
+
+
+style={
+  Platform.OS==="android"?
+  {height:50,width:50,backgroundColor:COLORS.white,flexDirection:"row",justifyContent:'center',
+        borderRadius:15,
+        marginLeft:30,
+        shadowOffset:{   width: 11,
+          height: 8},shadowOpacity:1,elevation:5, shadowColor: 'gray',
+    
+      
+      
+    
+      }:
+      {height:50,width:50,backgroundColor:COLORS.white,flexDirection:"row",justifyContent:'center',
+        borderRadius:15,
+        
+        shadowOffset:{   width: 11,
+          height: 8},shadowOpacity:0.1,elevation:0.01, shadowColor: 'gray',
+       opacity:10,
+       marginLeft:30,
+     
+    
+      }
+
+} 
+
+onPress={()=>this.props.navigation.goBack()}>
+
    
-<Iconico name={"arrow-back"}
+{/* <Iconico name={"arrow-back"}
      size = {25}
-     color = {"white"}
-/>
+     color = {COLORS.buttonColor}
+/> */}
+
+<Image
+       source = {images.backiconfood}
+    style={{height:30,width:30,alignSelf:'center'
+}}
+    
+     />
+
 
     
-    </View>
+  
     </TouchableOpacity>
     <View style={{height:"100%",width:"80%",backgroundColor:"transparent",justifyContent:"flex-end"}}>
         
@@ -456,7 +555,7 @@ if (user)
     
    
    
-    	   
+         
   
 </Text>
 </View>
@@ -466,28 +565,40 @@ if (user)
 
 <ScrollView>
                 <View style={{height:height*0.3,width:"100%",backgroundColor:"transparent",justifyContent:"center",alignItems:"center"}}>
-                    <View style={{height:125,width:125,backgroundColor:"#388e3c",justifyContent:"center",alignItems:"center",borderRadius:125/2}}>
-                    <IconAwe
-                       name={"phone"}
-                       size = {65}
-                       color="white"
-                       
-                      />
+                    <View style={{height:200,
+
+                      width:'90%',justifyContent:"center",alignItems:"center",borderRadius:125/2}}>
+                    <Image
+                    tintColor="#28A646"
+       source = {images.timer}
+    style={{height:200,width:200,marginLeft:35
+}}
+    
+     />
+      <Text style={{fontSize:22,fontFamily:'Poppins-Regular',
+      color:"white",textAlign:'center',fontWeight:'700',
+    position:'absolute',top:75,}}>
+      00:{this.state.timer}
+                         
+
+                                </Text>
+
                         </View>
                     </View>
-                    <View style={{height:110,width:"100%",backgroundColor:"transparent"}}>
-                        <View style={{height:"50%",width:"100%",backgroundColor:"transparent",justifyContent:"center",alignItems:"center"}}>
-                            <Text style={{fontSize:18,fontWeight:"bold",color:"white"}}>
-                            Verification by phone
+                    <View style={{height:60,width:"100%",backgroundColor:"transparent"}}>
+                          <Text style={{fontSize:22,
+                            fontWeight:'700',
+                            fontFamily:'Poppins-Regular',color:"#2E3333",textAlign:'center'}}>
+                          Verification Code
 
                                 </Text>
-                            </View>
-                            <View style={{height:"50%",width:"90%",backgroundColor:"transparent",justifyContent:"center",alignSelf:"center",}}>
-                            <Text style={{fontSize:14,textAlign:"center",color:"white"}}>
-                            We have sent you a six-digit OTP code, please enter it for verification.
+                                <Text style={{fontSize:11,fontFamily:'Poppins-Regular',color:"#434848",textAlign:'center',
+                                fontWeight:'500',
+                              marginTop:5}}>
+                            We have sent the 6 digit OTP to your Mobile Number
 
                                 </Text>
-                            </View>
+                         
                         </View>
                     
                     <View style={{alignSelf:'center',width:'100%',height:100 ,backgroundColor:"transparent",justifyContent:"center"}}>
@@ -655,21 +766,89 @@ if (user)
 </View>
                         
                    
-                    <View style={{height:120,width:"100%",backgroundColor:"transparent",justifyContent:"center",alignItems:"center"}}>
-                   <TouchableOpacity style={{height:45,width:"75%",backgroundColor:"#388e3c",alignItems:"center",justifyContent:"center",borderRadius:5}} onPress = {()=> this.verify()}>
+                    <View style={{width:"100%",backgroundColor:"transparent",justifyContent:"center",alignItems:"center"}}>
+                 
+                    <TouchableOpacity style={{ 
+                      borderRadius: 10, 
+                    height:45,
+                    backgroundColor: COLORS.buttonColor, 
+                    width: '70%',  
+                    alignContent: 'center', justifyContent: 'center' }} 
+                    onPress = {()=> this.verify()}>
+
+        <Text style={{ fontSize: 14, color: 'white', alignSelf: 'center',fontFamily:COLORS.myfont, }}>
+    
+        Continue
+            
+    
+  
+</Text>
+    </TouchableOpacity>
+
+    {this.state.timer === 0
+   ?
+   
+
+    <TouchableOpacity 
+    onPress = {()=> 
+    {
+      // clearInterval(this.interval);
+      this.setState({timer:30});
+
+      this.handleSendCode();
+      // this.interval = setInterval(
+      //   () => 
+      //   {
+      //     if(this.state.timer !== 0)
+      //     {
+         
+      //         this.setState((prevState)=> ({ timer: prevState.timer - 1 }))
+           
+         
+      //     }
+      // },
+      //   1000
+      // );
+
+    }}>
+
+  
+    <Text style={{fontSize:12,fontFamily:'Poppins-Regular',color:"#525252",textAlign:'center',
+    fontWeight:'400',
+                              marginTop:15}}>
+
+                            Didn’t get a code? 
+                            <Text style={{fontSize:12,fontFamily:'Poppins-Regular',
+                            color:"#00CCCB",textAlign:'center',
+                            fontWeight:'400',
+                              marginTop:15}}>
+
+                            
+                            {" "}Resend
+                            </Text>
+                                </Text>
+                                </TouchableOpacity>
+
+:
+null
+
+}
+                   {/* <TouchableOpacity style={{height:45,width:"75%",backgroundColor:COLORS.buttonColor,alignItems:"center",justifyContent:"center",borderRadius:5}} 
+                   
+                   onPress = {()=> this.verify()}>
                     <View >
                         <Text style={{color:"white",fontSize:14,}}>
-                           Verify
+                         Continue
                             </Text>
 
                         
                         </View>
                         </TouchableOpacity>
-                        
+                         */}
                     </View>
                     <KeyboardSpacer/>
                     </ScrollView>
-</ImageBackground>
+
 
         </View>
 
@@ -711,19 +890,22 @@ if (user)
           //borderBottomWidth: 0.3,
           borderColor: 'black',
           width: 35,
+          fontFamily:'Poppins-Regular',
+          fontSize:14,  
           height:"100%",
           color:"black",
         },
         inputview: {
-          height: height * 0.08,
+          height: 50,
+      
           borderWidth: 1,
-          borderRadius:5,
-          borderColor: "gray",
+          borderRadius:8,
+          borderColor: "#E0E0E0",
           padding: 2,
           backgroundColor:'white',
           elevation:5,
           marginLeft:3,
-          paddingBottom: '3%',
+         
           
         },
       });

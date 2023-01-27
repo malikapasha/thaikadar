@@ -355,7 +355,6 @@ const categorysubSelection = async(item)=>{
       const get_DataByCategory_Id = async (cate_id) => {
         setProgress(true)
 
-
          
         //http://circularbyte.com/cwp/api/get-posts/7/0/20
 
@@ -1098,9 +1097,7 @@ const handleCategory =(item)=>{
  <TouchableOpacity onPress={()=> get_DataByCategory_Id(0)}>
                     <View  style={{ marginVertical: 10,backgroundColor:"transparent",width:75,alignContent:"center",alignItems:"center",height:65,left:5 }}>
                         <View style={{ alignSelf:"center"}}>
-                            <View>
-        <Text style={styles.iconTextStyle}>All</Text>
-                            </View>
+                           
                             <View style={styles.circleIcon}>
                                 <Image
                                source={logoImage}
@@ -1108,7 +1105,9 @@ const handleCategory =(item)=>{
                                 
                                 />
                             </View>
-                        
+                            <View>
+        <Text style={styles.iconTextStyle}>All</Text>
+                            </View>
                         
                         </View>
 
@@ -1129,19 +1128,20 @@ const handleCategory =(item)=>{
                       alignContent:"center",alignItems:"center",
                       height:65,left:5 }}>
                         <View style={{ alignSelf:"center"}}>
-                            <View>
-                          
-
-        <Text numberOfLines={1} style={styles.iconTextStyle}>{item.category_name}</Text>
-                            </View>
+                           
                             <View style={styles.circleIcon}>
                                 <Image
                                 source={{uri:"https://thaikadar.com/public/postimage/"+item.category_image}}
-                                style={{height:40,width:40,backgroundColor:"transparent",resizeMode:'contain'}}
+                                style={{height:34,width:34,backgroundColor:"transparent",resizeMode:'cover'}}
                                 
                                 />
                             </View>
                         
+                            <View>
+                          
+
+                          <Text numberOfLines={1} style={styles.iconTextStyle}>{item.category_name}</Text>
+                                              </View>
                         
                         </View>
 

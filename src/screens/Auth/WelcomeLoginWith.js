@@ -466,7 +466,7 @@ class WelcomeLoginWith extends React.Component{
                 <View style={{justifyContent:"center",
                 height:"100%",width:"100%",alignContent: 'center', alignSelf:'center',backgroundColor:"#28A646",borderRadius: 10,
                }}>
-              <Text style={{fontSize: 15, color: "black", alignSelf: 'center',fontWeight:"600",fontFamily:'Poppins-Regular'}}>
+              <Text style={{fontSize: 15, color: "white", alignSelf: 'center',fontWeight:"600",fontFamily:'Poppins-Regular'}}>
                Skip for now
                 </Text>
                 </View>
