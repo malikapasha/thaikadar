@@ -173,6 +173,7 @@ const [user_Info,setuserInfo] = useState("")
             business_email:userEmail.replace(/^\s+|\s+$/g, ""),
             business_name:userName.replace(/^\s+|\s+$/g, ""),
             login_method:login_method,
+            user_type:login_method,
             id:user_Id,
             fcm:fcmToken,
             profile_photo_path:"",

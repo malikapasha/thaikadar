@@ -1,0 +1,16 @@
+com/thaikadar/ReactNativeFlipper.java
+ com.thaikadar.ReactNativeFlipper
+ com.thaikadar.ReactNativeFlipper$1
+ com.thaikadar.ReactNativeFlipper$2
+ com.thaikadar.ReactNativeFlipper$2$1
+circularbyte/thaikadar/MainActivity.java
+ circularbyte.thaikadar.MainActivity
+circularbyte/thaikadar/SplashActivity.java
+ circularbyte.thaikadar.SplashActivity
+circularbyte/thaikadar/MainApplication.java
+ circularbyte.thaikadar.MainApplication
+ circularbyte.thaikadar.MainApplication$1
+com/facebook/react/PackageList.java
+ com.facebook.react.PackageList
+circularbyte/thaikadar/BuildConfig.java
+ circularbyte.thaikadar.BuildConfig

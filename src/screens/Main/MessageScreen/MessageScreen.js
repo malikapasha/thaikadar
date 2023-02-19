@@ -5,7 +5,13 @@ import { styles } from "./MessageScreenStyle";
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { NavigationContainer ,useIsFocused} from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-community/async-storage';
+
+import LoginFirst from '../../LoginFirst';
+import TopBar from '../../TopBar';
+import { images, SIZES, COLORS, FONTS } from '../../../constant';
+
+
 const MessageScreen = ({ navigation }) => {
 
     const logoImage = require('../../../assets/images/logo/logo.png');
@@ -20,13 +26,6 @@ const MessageScreen = ({ navigation }) => {
     // const [inboxmsg, setinboxmsg] = useState([]);
   const isFocused = useIsFocused();
 
-    // useEffect(() => {
-    //     // inboxapiHandler()
-    //     sendmsgapiHandler()
-    //     getmsgapiHandler()
-        
-    //   }, [isFocused]);
-
         useEffect(() => {
       
       console.log("Your inbox is calling here................")
@@ -37,9 +36,6 @@ const MessageScreen = ({ navigation }) => {
 
   const getmsgapiHandler = async ()=>{
          
-    
-    // let value = await AsyncStorage.getItem('user2');
-    // let parsed = JSON.parse(value);
 
     let value1 = await AsyncStorage.getItem('user');
     console.log("Value:::::",value1)
@@ -48,8 +44,6 @@ const MessageScreen = ({ navigation }) => {
     
     setuserdata(parsed1);
 
-    //http://circularbyte.com/cwp/api/get-inbox/34
- // fetch('https://thaikadar.com/api/get-inbox/'+parsed1.id,
  fetch('https://thaikadar.com/api/get-inbox/'+parsed1.id,
     {
        method: 'GET',
@@ -136,81 +130,6 @@ const MessageScreen = ({ navigation }) => {
 
 
    
-    //   const inboxapiHandler = async()=>{
-       
-    //     // const lang = await AsyncStorage.getItem('language');
-    //     // if (lang !== null) {
-    //     //   setlang(lang);
-    //     // }
-  
-  
-    //       // let value = await AsyncStorage.getItem('user2id');
-    //       // let parsed1 = JSON.parse(value);
-  
-        
-    //       let value1 = await AsyncStorage.getItem('user');
-      
-    //       let parsed = JSON.parse(value1);
-  
-    //     //   setmySenderid(parsed._id)
-    //     //   setmySenderName1(parsed.name)
-  
-    //     //   console.log('ID is: ',parsed._id);
-      
-    //       fetch(
-    //           'https://thaikadar.com/api/save-inbox'+parsed._id
-    //           )
-              
-    //           .then((response) => response.json())
-    //           .then((responseJson) => {
-    //             console.log("res::",responseJson)
-      
-    //             let m=responseJson.data
-    //             let chat = []
-    //             for(let i=0;i<m.length;i++)
-    //             {
-                 
-    //               chat.push(m[i])
-                
-      
-    //               if( parsed._id === m[i].sender_id){
-                  
-    //             console.log("id is matched:::::::::")
-    //             chat[i].name = m[i].receiver_name;
-                   
-    //               }
-  
-    //               else{
-                   
-    //                   chat[i].name = m[i].sender_name;
-    //                   console.log("id is not matched:::::::::")
-                 
-    //               }
-    //             }
-      
-               
-    //         setMessages(chat);
-  
-      
-               
-               
-    //           })
-    //           .catch((error) => {
-                 
-    //             console.log(error)
-    //             console.log('errorgetAllrest.....................................')
-               
-               
-  
-  
-  
-  
-    //           });
-        
-      
-    //       }
-  
-  
   
 
 
@@ -251,19 +170,7 @@ const MessageScreen = ({ navigation }) => {
     <Text style={{fontSize:28,fontWeight:"bold",color:"black",alignSelf:'center'}}>{item.receiver_initials}</Text>
               }
 
-        {/* <Image
-          source={{uri:"https://thaikadar.com/public/postimage/"+item.post_image}}
-                        style={{
-                            height:"100%",
-                            width: "100%",
-                           borderRadius:60/2,
-                        //    alignSelf:"center",
-                           
-                           
-            
     
-                        }}
-                    /> */}
                     </View>
                     <View style={{height:"100%",width:"80%",backgroundColor:"transparent"}}>
                     <View style={{backgroundColor:"transparent",height:'40%',width:'100%',flexDirection:"row"}}>
@@ -350,20 +257,33 @@ const MessageScreen = ({ navigation }) => {
 }
     return (
         <SafeAreaView style={styles.safeAreaViewStyle}>
-            <View style={styles.safeViewStyle}>
-                <View>
-                    <Icon
-                        name={'mail-outline'}
-                        style={styles.icons}
-                    />
-                </View>
-                <View>
-                    <Text style={styles.headerText}>Inbox</Text>
-                </View>
-                <View style={styles.imageLogoView}>
-                    <Image source={logoImage} style={styles.imageLogoStyle} />
-                </View>
-            </View>
+
+
+  {Platform.OS === "android" 
+                
+                ?
+                <View style={{
+              
+                  height:15,width:"100%",backgroundColor:"transparent"}}>
+                    </View>
+                    :
+                    <View style={{
+              
+                      height:40,width:"100%",backgroundColor:"transparent"}}>
+                        </View>
+                }
+
+<View style={{height:50,marginTop:10,width:"100%",backgroundColor:"transparent",flexDirection:"row",borderBottomWidth:0.5,borderBottomColor:COLORS.lightGray}}>
+            
+               <TopBar
+navigation={ navigation }
+screentitle = "My Inbox"
+isbank = {true}
+/>
+           
+        </View>
+
+          
             <View style={styles.container}>
                 {
                  msgdata.length===0?

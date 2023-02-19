@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef, } from "react";
-import { TextInput, TouchableOpacity, View,FlatList,LogBox, SafeAreaView, Image, ScrollView, Text,Alert,ActivityIndicator } from "react-native";
+import { TextInput, TouchableOpacity, View,FlatList,LogBox, SafeAreaView, Image, ScrollView, Text,Alert,ActivityIndicator,Linking } from "react-native";
 import { styles } from "./AddScreenStyle";
 import Icon from 'react-native-vector-icons/Ionicons';
 import RBSheet from "react-native-raw-bottom-sheet";
@@ -19,6 +19,11 @@ import { black } from "react-native-paper/lib/typescript/styles/colors";
 import { NavigationContainer,useIsFocused } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { CommonActions } from '@react-navigation/native';
+
+import LoginFirst from '../../LoginFirst';
+import TopBar from '../../TopBar';
+import { images, SIZES, COLORS, FONTS } from '../../../constant';
+
 const AddScreen = (props) => {
 
     const [login,setlogin] = useState(false);
@@ -343,17 +348,17 @@ const AddScreen = (props) => {
          const fromDate = new Date().toISOString();
          const postapiHandler =async (messages)=>{
             if(arrFinalImage.length==0){
-                Alert.alert("Thaikadar.com","Select Images.")
+                Alert.alert("Thaikadar.com","Select your Post images.")
                 return
             }else{
                 console.log("images",arrFinalImage.length)
             }
             if(txtTitle==""){
-                Alert.alert("Thaikadar.com","Enter Title")
+                Alert.alert("Thaikadar.com","Enter Post Title")
                 return
             }
             if(txtDescription==""){
-                Alert.alert("Thaikadar.com","Enter Description")
+                Alert.alert("Thaikadar.com","Enter Post Description")
                 return
             }
             // if(priceValue==""){
@@ -361,17 +366,17 @@ const AddScreen = (props) => {
             //     return
             // }
             if(txtPrice==""){
-                Alert.alert("Thaikadar.com","Enter price")
+                Alert.alert("Thaikadar.com","Enter the price")
                 return
             }
             
             if(categoryValue==""){
-                Alert.alert("Thaikadar.com","Select Categorie")
+                Alert.alert("Thaikadar.com","Select Post Category")
                 return
             }
             
             if(fullAddress==""){
-                Alert.alert("Thaikadar.com","Select address.")
+                Alert.alert("Thaikadar.com","Post address missing")
                 return
             }
             console.log("Title txt::::::",txtTitle) 
@@ -542,8 +547,8 @@ const AddScreen = (props) => {
         let parsed = JSON.parse(longLatValue);
         console.log('Latitude is here................',parsed.latitude)
         console.log('Longitude is here................',parsed.longitude)
-setlatitudevalue(parsed.latitude)
-setlangitudevalue(parsed.longitude)
+setlatitudevalue(0)
+setlangitudevalue(0)
         // props.navigation.goBack()
         
       }
@@ -657,51 +662,15 @@ setlangitudevalue(parsed.longitude)
 // console.log("ImagesArray..................",data)
          let arr = data
          for (let i=0 ; i<arr.length ; i++){
-        //   console.log("ImagespathArray............",arr[i].path)
-        //   let path = arr[i].path
+     
         let path = arr[i].path+""
         console.log("url :::::::::",arr[i].path+"")
           
             setimgUrl(path)
-         // console.log("Image:::::",path)
-        //   var form = new FormData();
-        //   form.append('image', path);
-        //   arrFinalImage.push(path);
+        
           setArrFinalImage(arrFinalImage => [...arrFinalImage,path] );
            
       
-        //  console.log("Form::::",form)
-         
-    //   fetch( 'https://thaikadar.com/public/postimage/uploadbaseimage.php',
-    //   {
-    //      method: 'POST',
-    //      headers: {
-    //        Accept: 'application/json',
-    //        'Content-Type': 'multipart/form-data',
-    //      },
-    //      body:form
-    //    })
-    //    .then((response) => response.json())
-    //    .then((responseJson) => {
-    //     setisloading(true)
-    //      console.log("image data.............",responseJson.path)
-    //      let img = "https://thaikadar.com/public/postimage/"+responseJson.path
-    //      postImage.push(img)
-        
-    //        setrefreshing(true)
-    //      console.log("PostedImages:::::",postImage)
-    //     setArrFinalImage(postImage)
-    //    })
-
-    //    .catch((error) => {
-    //      console.log(error)
-    //      console.log('error')
-         
-    //       setisloading(false)
-    //        ToastAndroid.show('Error Occurred! Try again...', ToastAndroid.SHORT);
-    //    });
-
-
          }
 
            console.log("final image............",arrFinalImage)
@@ -734,7 +703,7 @@ const renderItem = ({item, index}) => (
     borderColor: "black",
     borderBottomWidth: 0.6,}}
       placeholder={dataQuestions[props.index].question}
-              placeholderTextColor="blue"
+              placeholderTextColor="#28A646"
              
       onChangeText={val => {
          let newArray = [...dataQuestions];
@@ -757,74 +726,67 @@ const renderItem = ({item, index}) => (
 
     return (
         <SafeAreaView style={styles.safeAreaViewStyle}>
-            <View style={styles.safeViewStyle}>
-                <View style={styles.imageLogoView}>
-                    <Image source={logoImage} style={styles.imageLogoStyle} />
-                </View>
-            </View>
-            {!login ? 
-            <View
-            style={{flexDirection:'column',backgroundColor:'white',height:700}}
-            >
+           {Platform.OS === "android" 
+                
+                ?
+                <View style={{
+              
+                  height:15,width:"100%",backgroundColor:"transparent"}}>
+                    </View>
+                    :
+                    <View style={{
+              
+                      height:40,width:"100%",backgroundColor:"transparent"}}>
+                        </View>
+                }
 
-<Image source={not_connected} style={{
-                  height:360,
-        resizeMode:'contain',
-        width:'100%'}} />
-
-              <TouchableOpacity
-              onPress={()=>
-                {
-                    props.navigation.dispatch(
-                        CommonActions.reset({
-                          index: 0,
-                          routes: [
-                            { name: 'AuthStack'},
-                            // {
-                            //   name: 'Profile',
-                            //   params: { user: 'jane' },
-                            // },
-                          ],
-                        })
-                      );
-
-                    // props.navigation.navigate('SignIn')
-              }
-            }
-              style={{ borderColor: 'red', borderWidth: 1, flexDirection:'column',
-              marginTop: 25, marginBottom: 15, justifyContent: 'center', alignItems: 'center', 
-              marginHorizontal: 45, backgroundColor: '#28A646', borderRadius: 30, paddingVertical: 8 }}>
-                  <Text style={{ fontSize: 16, color: 'white', textAlign: 'center', alignSelf: 'center', marginBottom: 2 }}>
-                  Login</Text>
-
+<View style={{height:50,marginTop:10,width:"100%",backgroundColor:"transparent",flexDirection:"row",borderBottomWidth:0.5,borderBottomColor:COLORS.lightGray}}>
                
+                  
+               <TopBar
+navigation={ props.navigation }
+screentitle = "Add Post"
+isbank = {true}
+/>
+           
+        </View>
 
-              </TouchableOpacity>
-
-            
-
-              </View>
-              :
+            {!login ? 
+              <LoginFirst
+              navigation={props.navigation}
+              message="Login to add new post here"
+              />
+                 :
                   user.phone_number === "" || user.email === "" ?
                   <View
                   style={{flexDirection:'column',backgroundColor:'white',height:700}}
                   >
       
       <Image source={moreinfo} style={{
-                        height:360,
+        marginTop:40,
+                        height:220,
               resizeMode:'contain',
               width:'100%'}} />
-      
-      <TouchableOpacity
-                  onPress={()=>
-                    {
-                        props.navigation.navigate('EditUserScreen')
-                    }
-                }
-                  style={{ borderColor: 'red', borderWidth: 1, marginTop: 25, marginBottom: 15, justifyContent: 'center', alignItems: 'center', marginHorizontal: 20, backgroundColor: '#28A646', borderRadius: 30, paddingVertical: 8 }}>
-                      <Text style={{ fontSize: 16, color: 'red', textAlign: 'center', alignSelf: 'center', marginBottom: 2 }}>Complétez d'abord votre profil</Text>
-                  </TouchableOpacity>
-      
+
+<TouchableOpacity style={{ borderRadius: 10, backgroundColor: COLORS.buttonColor, 
+      width: '60%', height: 50, alignContent: 'center', justifyContent: 'center',alignSelf:'center' }}
+      onPress={()=>
+        {
+            props.navigation.navigate('EditUserScreen')
+        }
+    }
+       
+       >
+
+        <Text style={{ fontSize: 12, color: 'white', alignSelf: 'center',fontFamily:COLORS.myfont, }}>
+    
+        Complete your Profile to continue
+            
+    
+  
+</Text>
+    </TouchableOpacity>
+     
                   
       
                     </View>
@@ -835,7 +797,7 @@ const renderItem = ({item, index}) => (
                 <View style={{ margin: 15 }}>
                     <View style={{ marginLeft: 10 }}>
                         <Text style={{ color: '#002B64', fontSize: 18 }}>
-                        Post Images
+                        Select Post Images
                         </Text>
                     </View>
                     <TouchableOpacity onPress={()=>takePics()}>
@@ -912,7 +874,7 @@ arrFinalImage.length === 0?
                     </TouchableOpacity>
                     <View style={{ marginTop: 15 }}>
                         <View style={{ marginLeft: 10 }}>
-                            <Text style={{ color: '#002B64', fontSize: 18 }}>Title</Text>
+                            <Text style={{ color: '#002B64', fontSize: 18 }}>Post Title</Text>
                         </View>
                         <View style={{ marginTop: 10 }}>
                             <TextInput
@@ -921,13 +883,13 @@ arrFinalImage.length === 0?
                                 onChangeText={text => setTxtTitle(text)}
                                 defaultValue={txtTitle}
                                 placeholderTextColor={"darkgray"}
-                                placeholder={"Title"}
+                                placeholder={"Enter Title Here"}
                             />
                         </View>
                     </View>
                     <View style={{ marginTop: 15 }}>
                         <View style={{ marginLeft: 10 }}>
-                            <Text style={{ color: '#002B64', fontSize: 18 }}>Description</Text>
+                            <Text style={{ color: '#002B64', fontSize: 18 }}>Post Description</Text>
                         </View>
                         <View style={{ marginTop: 10 }}>
                             <TextInput
@@ -937,14 +899,14 @@ arrFinalImage.length === 0?
                                 onChangeText={text => setTxtDescription(text)}
                                 defaultValue={txtDescription}
                                 placeholderTextColor={"darkgray"}
-                                placeholder={"Description"}
+                                placeholder={"Enter Description Here"}
                             />
                         </View>
                     </View>
                     <View style={{ marginTop: 15, flex: 1, flexDirection: 'row', justifyContent: 'space-between',backgroundColor:"transparent" }}>
                     <View style={{flex:1,display:'none'}}>
                             <View style={{ marginLeft: 10 }}>
-                                <Text style={{ color: '#002B64', fontSize: 18 }}>Price Type</Text>
+                                <Text style={{ color: '#002B64', fontSize: 18 }}>Type de prix</Text>
                             </View>
                             <View style={{marginTop:10,backgroundColor:"transparent" }}>
                             <TouchableOpacity  style={{ justifyContent: "center" }} onPress={() => setPrixModal(true)}>
@@ -954,7 +916,7 @@ arrFinalImage.length === 0?
                                     editable={false}
                                     underlineColorAndroid="transparent"
                                     value={priceValue}
-                                    placeholder={"Select Price"}
+                                    placeholder={"select Prix"}
                                     placeholderTextColor={"darkgray"}
                                     // defaultValue="Select prix"
                                 />
@@ -970,23 +932,24 @@ arrFinalImage.length === 0?
                         </View>
                         <View style={{ flex: 1, marginLeft: 10 }}>
                             <View style={{ marginLeft: 10 }}>
-                                <Text style={{ color: '#002B64', fontSize: 18 }}>Price</Text>
+                                <Text style={{ color: '#002B64', fontSize: 18 }}>Post Price</Text>
                             </View>
                             <View style={{ marginTop: 10 }}>
                                 <TextInput
-                                    style={[styles.inputBoxStyle, { height: 40 }]}
+                                  keyboardType = 'numeric'
+                                    style={[styles.inputBoxStyle]}
                                     underlineColorAndroid="transparent"
                                       onChangeText={text => setTxtPrice(text)}
                                         defaultValue={txtPrice}
                                         placeholderTextColor={"darkgray"}
-                                        placeholder={"Prix"}
+                                        placeholder={"Enter Price Here"}
                                 />
                             </View>
                         </View>
                     </View>
                     <TouchableOpacity style={{ marginTop: 15 }} onPress={() => setcategoriesModal(true)}>
                         <View style={{ marginLeft: 10 }}>
-                            <Text style={{ color: '#002B64', fontSize: 18 }}>Category</Text>
+                            <Text style={{ color: '#002B64', fontSize: 18 }}>Post Category</Text>
                         </View>
                         <View style={{ marginTop: 10, justifyContent: "center" }}>
                             <TextInput
@@ -995,7 +958,7 @@ arrFinalImage.length === 0?
                                 underlineColorAndroid="transparent"
                                 value={categoryValue}
                                 placeholderTextColor={"darkgray"}
-                                placeholder={"Select the Category"}
+                                placeholder={"Select Post Category"}
                             />
                             <View style={{ position: 'absolute', right: 0 }}>
                                 <Icon
@@ -1011,7 +974,7 @@ arrFinalImage.length === 0?
                         console.log('called',subcategoriesModal)
                         setsubcategoriesModal(true)}}>
                         <View style={{ marginLeft: 10 }}>
-                            <Text style={{ color: '#002B64', fontSize: 18 }}>Sub Categorie</Text>
+                            <Text style={{ color: '#002B64', fontSize: 18 }}>Select Sub Category</Text>
                         </View>
                         <View style={{ marginTop: 10, justifyContent: "center" }}>
                             <TextInput
@@ -1032,8 +995,8 @@ arrFinalImage.length === 0?
                     </TouchableOpacity>
                     :null}
                     {dataQuestions.length > 0 ?
-                    <View style={{ marginLeft: 10 }}>
-                            <Text style={{ color: '#002B64', fontSize: 18 }}>Relevant questions</Text>
+                    <View style={{ marginLeft: 10,marginTop:10 }}>
+                            <Text style={{ color: '#002B64', fontSize: 18 }}>Relevant Important Questions</Text>
                         </View>
 : null}
                     <FlatList
@@ -1047,29 +1010,75 @@ arrFinalImage.length === 0?
 				renderItem=   {renderItem}
 			/>
 
-                    <TouchableOpacity style={{ marginTop: 15 }} onPress={() => navigatemap(true)}>
+                    {/* <TouchableOpacity style={{ marginTop: 15 }} onPress={() => navigatemap(true)}> */}
+                       
                         <View style={{ marginLeft: 10 }}>
-                            <Text style={{ color: '#002B64', fontSize: 18 }}>Location</Text>
+                            <Text style={{ color: '#002B64', fontSize: 18 }}>Post Address</Text>
                         </View>
                         <View style={{ marginTop: 10, justifyContent: "center" }}>
                             <TextInput
-                                editable={false}
+                                editable={true}
                                 value={fullAddress}
                                 style={styles.inputBoxStyle}
                                 underlineColorAndroid="transparent"
                                 placeholderTextColor={"darkgray"}
-                                placeholder={"Select the Location"}
-                                // onChangeText={text => setLocationValue(text)}
-                                // defaultValue={locationValue}
+                                placeholder={"Enter Post Address"}
+                                onChangeText={text => setfullAddress(text)}
+                                defaultValue={fullAddress}
                             />
-                            <View style={{ position: 'absolute', right: 0 }}>
-                                <Icon
-                                    name={'ios-chevron-forward'}
-                                    style={styles.forwardIcon}
-                                />
-                            </View>
+                          
                         </View>
-                    </TouchableOpacity>
+
+                    {/* </TouchableOpacity> */}
+
+                    <View style={{ marginLeft: 8,marginTop:10 }}>
+                            <Text style={{ color: '#002B64', fontSize: 18 }}>Address Latitude</Text>
+                        </View>
+                        <View style={{ marginTop: 10, justifyContent: "center" }}>
+                            <TextInput
+                              keyboardType = 'numeric'
+                                editable={true}
+                                value={latitudevalue}
+                                style={styles.inputBoxStyle}
+                                underlineColorAndroid="transparent"
+                                placeholderTextColor={"darkgray"}
+                                placeholder={"Address Latitude"}
+                                onChangeText={text => setlatitudevalue(text)}
+                                defaultValue={latitudevalue}
+                            />
+                          
+                        </View>
+
+
+                        <View style={{ marginLeft: 8,marginTop:10 }}>
+                            <Text style={{ color: '#002B64', fontSize: 18 }}>Address Longitude</Text>
+                        </View>
+                        <View style={{ marginTop: 10, justifyContent: "center" }}>
+                            <TextInput
+                             keyboardType = 'numeric'
+                                editable={true}
+                                value={langitudevalue}
+                                style={styles.inputBoxStyle}
+                                underlineColorAndroid="transparent"
+                                placeholderTextColor={"darkgray"}
+                                placeholder={"Address Longitude"}
+                                onChangeText={text => setlangitudevalue(text)}
+                                defaultValue={langitudevalue}
+                            />
+                          
+                        </View>
+
+                        <Text style={{ color: '#002B64', fontSize: 11,marginTop:10 }}>For better user experience get the latitude longitudes points from google map and Enter, otherwise enter 0 and 0 only.</Text>
+                   
+                        <TouchableOpacity  onPress={() => 
+                 
+                 Linking.openURL("https://thaikadar.com/secureinvestment/how-to-get-latitude-longitude-from-google-map/")
+                  }>
+ <Text style={{fontSize:11,alignSelf:'center',fontWeight:'bold',color:COLORS.buttonColor}}>
+ {"  "}Learn more...</Text>
+</TouchableOpacity>
+
+
                     <View style={{ marginTop: 15,display:'none' }}>
                         <View style={{ marginLeft: 10 }}>
                             <Text style={{ color: '#002B64', fontSize: 18 }}>Payment</Text>
@@ -1102,8 +1111,8 @@ arrFinalImage.length === 0?
                                 </View>
                             </TouchableOpacity>
                             <View style={{ margin: 10 }}>
-                                <Text style={{ color: 'gray', marginBottom: 5, fontSize: 18 }}>-Sell fast with Thaikadar.com</Text>
-                                {/* <Text style={{ color: 'gray', marginBottom: 5, fontSize: 18 }}>-4 semaine enligne</Text> */}
+                                <Text style={{ color: 'gray', marginBottom: 5, fontSize: 18 }}>-Vendez vite avec Thaikadar.com</Text>
+                                <Text style={{ color: 'gray', marginBottom: 5, fontSize: 18 }}>-4 semaine enligne</Text>
                             </View>
                         </View>
                         <View style={{ marginTop: 15, borderRadius: 20, borderWidth: 0.5, borderColor: '#002B64' }}>
@@ -1118,7 +1127,7 @@ arrFinalImage.length === 0?
                                 </View>
                             </TouchableOpacity>
                             <View style={{ margin: 10 }}>
-                                <Text style={{ color: 'gray', marginBottom: 5, fontSize: 18 }}>-Sell fast with Thaikadar.com</Text>
+                                <Text style={{ color: 'gray', marginBottom: 5, fontSize: 18 }}>-Vendez vite avec Thaikadar.com</Text>
                                 <Text style={{ color: 'gray', marginBottom: 5, fontSize: 18 }}>-6 semaine enligne</Text>
                                 <Text style={{ color: 'gray', marginBottom: 5, fontSize: 18 }}>-1 semain Hightlite</Text>
                             </View>
@@ -1127,17 +1136,17 @@ arrFinalImage.length === 0?
                     {login ? 
                   user.phone_number === "" || user.email === "" ?
                   <TouchableOpacity
-                  style={{ borderColor: 'red', borderWidth: 1, marginTop: 25, marginBottom: 15, justifyContent: 'center', alignItems: 'center', marginHorizontal: 20, backgroundColor: '#28A646', borderRadius: 30, paddingVertical: 8 }}>
+                  style={{ borderColor: 'red', borderWidth: 1, marginTop: 25, marginBottom: 15, justifyContent: 'center', alignItems: 'center', marginHorizontal: 20, backgroundColor: '#E1CB00', borderRadius: 10, paddingVertical: 8 }}>
                       <Text style={{ fontSize: 16, color: 'red', textAlign: 'center', alignSelf: 'center', marginBottom: 2 }}>Complétez d'abord votre profil</Text>
                   </TouchableOpacity>
                   :
-                    <TouchableOpacity onPress={()=> postapiHandler()}
-                    style={{ borderColor: '002B64', borderWidth: 1, marginTop: 25, marginBottom: 15, justifyContent: 'center', alignItems: 'center', marginHorizontal: 20, backgroundColor: '#28A646', borderRadius: 30, paddingVertical: 8 }}>
-                        <Text style={{ fontSize: 22, color: 'white', textAlign: 'center', alignSelf: 'center', marginBottom: 2 }}>Submit Post</Text>
-                   
-                      
-                   
-                    </TouchableOpacity>
+                  <TouchableOpacity onPress={()=> postapiHandler()}
+                  style={{ borderColor: '#002B64', borderWidth: 1, marginTop: 25, marginBottom: 15, justifyContent: 'center', alignItems: 'center', marginHorizontal: 20, backgroundColor: '#28A646', borderRadius: 10, paddingVertical: 8 }}>
+                      <Text style={{ fontSize: 18, color: 'white', textAlign: 'center', alignSelf: 'center', marginBottom: 2,fontFamily:COLORS.myfont }}>Upload Now</Text>
+                 
+                    
+                 
+                  </TouchableOpacity>
                     :
                     null}
                 </View>
@@ -1167,7 +1176,7 @@ arrFinalImage.length === 0?
                     >
                         <View style={{ marginHorizontal: 40 }}>
                             <View style={{ alignItems: 'center' }}>
-                                <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#050A30', }}>Price Type</Text>
+                                <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#050A30', }}>Type of price</Text>
                             </View>
 
 
@@ -1252,7 +1261,7 @@ arrFinalImage.length === 0?
                     >
                         <View style={{ marginHorizontal: 40 }}>
                             <View style={{ alignItems: 'center' }}>
-                                <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#050A30', }}>Catégorie</Text>
+                                <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#050A30', }}>Category</Text>
                             </View>
 
                             <FlatList
@@ -1313,7 +1322,7 @@ arrFinalImage.length === 0?
 
                         <View style={{ marginHorizontal: 40 }}>
                             <View style={{ alignItems: 'center' }}>
-                                <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#050A30', }}>Sous-catégorie</Text>
+                                <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#050A30', }}>Sub Category</Text>
                             </View>
 
 {arrsubCategory.length > 0 ?
@@ -1423,7 +1432,7 @@ arrFinalImage.length === 0?
              {
   progress==true?
 
-    <ActivityIndicator size="small" color={"green"}  style={{position:"absolute",alignItems:"center",alignSelf:"center",marginTop:"50%"}} />
+    <ActivityIndicator size="small" color={"#28A646"}  style={{position:"absolute",alignItems:"center",alignSelf:"center",marginTop:"50%"}} />
     :
     <View>
       </View>

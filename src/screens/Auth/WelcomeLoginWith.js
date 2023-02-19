@@ -295,37 +295,7 @@ class WelcomeLoginWith extends React.Component{
       
 
      <View style={styleCont.child}>
-        <View style={
-          Platform.OS === "android"?
-          {height:50,width:50,backgroundColor:"#FFFFFF",flexDirection:"row",
-        borderRadius:15,
-        
-        shadowOffset:{   width: 11,
-          height: 8},shadowOpacity:1,elevation:5, shadowColor: 'gray',
-    
-        position:'absolute',top:30, 
-        left:30,
-    
-      }:
-      {height:50,width:50,backgroundColor:"#FFFFFF",flexDirection:"row",
-        borderRadius:15,
-        
-        shadowOffset:{   width: 11,
-          height: 8},shadowOpacity:0.1,elevation:0.01, shadowColor: 'gray',
-       opacity:10,
-        position:'absolute',top:50, 
-        left:30,
-    
-      }
-    
-    }
-      >
-
       
-
-      
-           
-            </View>
             <View style={{height:210,width:this.state.width,backgroundColor:"transparent",justifyContent:"center"}}>
                 <View style={{height:200,width:"80%",backgroundColor:"transparent",alignSelf:"center"}}>
                 

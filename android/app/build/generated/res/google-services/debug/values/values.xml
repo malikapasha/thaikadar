@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">624293013808-25tdle5729s7rpv0n95jgh3qke90c2lq.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://thaikadar-7fb58-default-rtdb.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">624293013808</string>
+    <string name="google_api_key" translatable="false">AIzaSyC0Ph14avAQXc3J6jfI5PjH_j9aUl-GQvg</string>
+    <string name="google_app_id" translatable="false">1:624293013808:android:71aaaea336eccb6e9dc0f5</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyC0Ph14avAQXc3J6jfI5PjH_j9aUl-GQvg</string>
+    <string name="google_storage_bucket" translatable="false">thaikadar-7fb58.appspot.com</string>
+    <string name="project_id" translatable="false">thaikadar-7fb58</string>
+</resources>

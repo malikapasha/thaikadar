@@ -72,9 +72,12 @@ const mastercard = require("../assets/images/thaikadar/mastercard.png");
  const easypaisa = require("../assets/images/thaikadar/easypaisa.png");
 
 
+ const mainlogo = require("../assets/images/logo/logo.png");
+
 
 
 export default {
+    mainlogo,
      easypaisa,
     mastercard,
     arrowright,

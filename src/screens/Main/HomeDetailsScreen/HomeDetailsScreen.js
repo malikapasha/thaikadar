@@ -15,7 +15,7 @@ import { getVersion } from "jest";
 import AsyncStorage from '@react-native-community/async-storage'
 
 
-
+import { CommonActions } from '@react-navigation/native';
 
 
 import { SliderBox } from "react-native-image-slider-box";
@@ -290,6 +290,47 @@ longitude:parseFloat(responseJson.data.posts.longitude),
 
     }
 
+    const deletepost = async () => {
+
+        let theurl = "https://thaikadar.com/api/delete-posts/"+postid;
+      
+
+        fetch(theurl,
+        {
+           method: 'GET',
+           headers: {
+             Accept: 'application/json',
+             'Content-Type': 'application/json',
+           },
+          
+         })
+         .then((response) => response.json())
+         .then((responseJson) => {
+            console.log(responseJson)
+            if(responseJson.status=== true)
+            {
+                props.navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [
+                        { name: 'MesAnnonceScreen'},
+                        // {
+                        //   name: 'Profile',
+                        //   params: { user: 'jane' },
+                        // },
+                      ],
+                    })
+                  );
+            }
+            else
+            {
+
+            }
+            // setIsHeartSelected(responseJson.status)
+               })
+
+    }
+
     const markfavorite = async () => {
 
         let theurl = "https://thaikadar.com/api/remove-favorite";
@@ -369,7 +410,30 @@ longitude:parseFloat(responseJson.data.posts.longitude),
                     <View style={{ marginHorizontal: 5, marginTop: -30 }}>
                     <View style={{ marginHorizontal: 10,height:40,width:140,backgroundColor:"transparent",justifyContent:"space-evenly",flexDirection:"row",alignItems:"center",}}>
                        
-                       {userid == postdescription.posts.user_id || userid == 0 ? null : 
+                       {userid == postdescription.posts.user_id || userid == 0 ? 
+                         <TouchableOpacity  style={{backgroundColor:"white",height:40,width:40,justifyContent:"center",alignItems:"center",borderRadius:20,   elevation: 5,
+                         shadowOffset: { width: 0, height: 2 },
+                         shadowOpacity: 0.5,
+                         shadowRadius: 2,
+                         shadowColor: '#000',}}
+                         onPress={async()=>
+                            {
+                              deletepost()
+                            }
+                         }>
+                        <View   style={{backgroundColor:"white",height:"100%",width:"100%",justifyContent:"center",alignItems:"center",borderRadius:20,}}>
+                       
+                       <Icon
+                           name={'trash-outline'}
+                           size={25}
+                          
+                       />
+                      
+                     
+                     
+                       </View>
+                       </TouchableOpacity>
+                       : 
                        <TouchableOpacity  style={{backgroundColor:"white",height:40,width:40,justifyContent:"center",alignItems:"center",borderRadius:20,   elevation: 5,
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.5,
@@ -498,7 +562,7 @@ longitude:parseFloat(responseJson.data.posts.longitude),
 </View>
 
     <Text style={{ textAlign: 'right', color: '#7B8999', 
-    fontWeight: "bold", fontSize: 26,marginRight:15,marginTop:-55,marginLeft:40 }}>Rs. {postdescription.posts.price}</Text>
+    fontWeight: "bold", fontSize: 21,marginRight:15,marginTop:-55,marginLeft:40 }}>Rs. {postdescription.posts.price}</Text>
                         {/* <Text style={{ textAlign: 'right', color: '#7B8999', fontWeight: "400", fontSize: 18 }}>
                         {postdescription.posts.price_type === "0" ? " Fix Price" : 
                         postdescription.posts.price_type === "1" ? " Negotiable" : " Free"

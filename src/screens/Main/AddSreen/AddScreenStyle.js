@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     safeAreaViewStyle: {
         flex: 1,
-        backgroundColor: "#28A646"
+        backgroundColor: "white"
     },
     safeViewStyle:
     {
@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     inputBoxStyle: {
         height: 50,
         borderWidth: 0.5,
-        borderRadius: 20,
+        borderRadius: 10,
         color: '#002B64',
         fontWeight: '400',
         fontSize: 18,

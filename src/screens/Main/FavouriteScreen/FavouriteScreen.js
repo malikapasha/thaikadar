@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from "react";
-import { TextInput, View, SafeAreaView,FlatList, Image, ScrollView, Text, TouchableOpacity,Dimensions,ActivityIndicator } from "react-native";
+import { TextInput, View, SafeAreaView,FlatList, Image, ScrollView, Text, TouchableOpacity,Dimensions,ActivityIndicator,Platform } from "react-native";
 import { styles } from "./FavouriteScreenStyle";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { NavigationContainer,useIsFocused } from '@react-navigation/native';
@@ -7,6 +7,12 @@ const {height,width} = Dimensions.get('window');
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { CommonActions } from '@react-navigation/native';
+
+import LoginFirst from '../../LoginFirst';
+
+import TopBar from '../../TopBar';
+
+import { images, SIZES, COLORS, FONTS } from '../../../constant'
 
 const FavouriteScreen = ({navigation}) => {
     // const [isHeartSelected, setisHeartSelected] = useState(false)
@@ -108,70 +114,44 @@ const handleCategory =(item)=>{
 
     return (
         <SafeAreaView style={styles.safeAreaViewStyle}>
-            <View style={styles.safeViewStyle}>
-            {/* <View>
-                    <Icon
-                        name={'ios-chevron-back'}
-                        style={styles.icons}
-                        onPress={() => navigation.goBack()}
-                    />
-                </View> */}
-                {/* <View>
-                    <Icon
-                        name={'heart-outline'}
-                        style={styles.icons}
-                    />
-                </View> */}
-                <View>
-                    <Text style={styles.headerText}>Favorite</Text>
-                </View>
-                <View style={styles.imageLogoView}>
-                    <Image source={logoImage} style={styles.imageLogoStyle} />
-                    
-                </View>
-            </View>
+
+{Platform.OS === "android" 
+                
+                ?
+                <View style={{
+              
+                  height:15,width:"100%",backgroundColor:"transparent"}}>
+                    </View>
+                    :
+                    <View style={{
+              
+                      height:40,width:"100%",backgroundColor:"transparent"}}>
+                        </View>
+                }
+
+<View style={{height:50,marginTop:10,width:"100%",backgroundColor:"transparent",flexDirection:"row",
+borderBottomWidth:0.5,
+borderBottomColor:COLORS.lightGray}}>
+               
+                  
+               <TopBar
+navigation={ navigation }
+screentitle = "Favorites"
+isbank = {true}
+/>
+                  
+               </View>
+
+           
 
 
             {
                 isLogin==null?
-                <View style={{height:"100%",backgroundColor:"white"}}>
-                      <Image source={not_connected}  style={{ height:"45%",
-        resizeMode:'contain',
-        width:'100%'}} />
-        {/* <Text style={{fontWeight:"600",alignSelf:"center",fontSize:17 }}>
-        Veuillez d'abord vous connecter pour continuer la demande.
-                        </Text> */}
 
-                        <TouchableOpacity
-              onPress={()=>
-                {
-                    navigation.dispatch(
-                        CommonActions.reset({
-                          index: 0,
-                          routes: [
-                            { name: 'AuthStack'},
-                            // {
-                            //   name: 'Profile',
-                            //   params: { user: 'jane' },
-                            // },
-                          ],
-                        })
-                      );
-
-                    // props.navigation.navigate('SignIn')
-              }
-            }
-              style={{ borderColor: 'red', borderWidth: 1, flexDirection:'column',
-              marginTop: 25, marginBottom: 15, justifyContent: 'center', alignItems: 'center', 
-              marginHorizontal: 45, backgroundColor: '#28A646', borderRadius: 30, paddingVertical: 8 }}>
-                  <Text style={{ fontSize: 16, color: 'white', textAlign: 'center', alignSelf: 'center', marginBottom: 2 }}>
-                  Login</Text>
-
-               
-
-              </TouchableOpacity>
-
-                    </View>
+                <LoginFirst
+navigation={navigation}
+message="Login to have favorites here"
+/>
                     :
            
             <View style={{alignItems:"center",backgroundColor:"white",height:height*0.99,paddingBottom:125}}>
